@@ -18,6 +18,7 @@ contract NFT is ERC721URIStorage{
     }
 
    function createToken(string memory TokenURI) public returns (uint){
+    require(msg.sender == 0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097, "Transaction Rejected! Account Not Authorized to Create NFT");
     _tokenIds.increment();
     uint256 newItemId = _tokenIds.current();
 

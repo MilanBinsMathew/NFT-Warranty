@@ -24,6 +24,7 @@ contract NFTMarket is ReentrancyGuard{
         uint256 pno;
         address payable seller;
         address payable owner;
+        uint256 claim;
         bool activated;
     }
     
@@ -37,6 +38,7 @@ contract NFTMarket is ReentrancyGuard{
         uint256 pno,
         address seller,
         address owner,
+        uint256 claim,
         bool activated
     );
 
@@ -59,6 +61,7 @@ contract NFTMarket is ReentrancyGuard{
             pno,
             payable(msg.sender),
             payable(address(0)),
+            0,
             false
         );
 
@@ -73,6 +76,7 @@ contract NFTMarket is ReentrancyGuard{
             pno,
             msg.sender,
             address(0),
+            0,
             false
         );
     }
@@ -86,8 +90,10 @@ contract NFTMarket is ReentrancyGuard{
 
         IERC721(nftWarranty).transferFrom(IERC721(nftWarranty).ownerOf(tokenId), msg.sender, tokenId);
         idToWarrantyItem[itemId].owner = payable(msg.sender);
-           
-        //idToWarrantyItem[itemId].period = block.timestamp; 
+        idToWarrantyItem[itemId].period = idToWarrantyItem[itemId].period*30 days;
+
+        //below line updates the expiry date corresponding to the time of first Buy transaction
+        idToWarrantyItem[itemId].period = idToWarrantyItem[itemId].period + block.timestamp; 
         idToWarrantyItem[itemId].activated = true;
         _itemsSold.increment();
     }
@@ -106,7 +112,7 @@ contract NFTMarket is ReentrancyGuard{
             return false;
         }
         else{
-            
+            idToWarrantyItem[itemId].claim += 1;
             return true;
         }
     }

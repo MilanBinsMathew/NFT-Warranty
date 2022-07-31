@@ -57,13 +57,14 @@ export default function MyAssets() {
 
     let address = formInput.address;
 
+    const tokencontract = new ethers.Contract(nftaddress, NFT.abi, signer)
+    const approve = await tokencontract.giveResaleApproval();
+    await approve.wait();
     const marketContract = new ethers.Contract(nftmarketaddress, NFTMarket.abi, signer)
     const data = await marketContract.transferWarranty(nftaddress, nft.tokenId, address);
     
     await data.wait();
-    const tokencontract = new ethers.Contract(nftaddress, NFT.abi, signer)
-    const approve = await tokencontract.giveResaleApproval(nft.tokenId);
-    await approve.wait();
+   
     loadNFTs();
     
   }

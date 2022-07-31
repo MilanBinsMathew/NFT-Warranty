@@ -13,6 +13,7 @@ import NFT from "../artifacts/contracts/NFT.sol/NFT.json"
 
 export default function MyAssets() {
   let [nfts, setNfts] = useState([])
+
   let [loadingState, setLoadingState] = useState('not-loaded')
   const router = useRouter()
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function MyAssets() {
         tokenId: i.tokenId.toNumber(),
         seller: i.seller,
         owner: i.owner,
-        period: i.period,
+        period: i.period.toNumber(),
         pno: i.pno.toNumber(),
         name: meta.data.name,
         image: meta.data.image,
@@ -43,6 +44,7 @@ export default function MyAssets() {
       }
       return item
     }))
+
     setNfts(items)
     setLoadingState('loaded') 
   }
@@ -59,9 +61,9 @@ export default function MyAssets() {
     loadNFTs();
     
   }
-  
+
   if (loadingState === 'loaded' && !nfts.length) return (<h1 className="py-10 px-20 text-3xl text-center">No Active Warranties owned</h1>)
-  if (loadingState === "no-load" && !nfts.length) return(<h1 className="py-10 px-20 text-3xl text-center">Warranty Expired. No Active Warranties owned</h1>)
+ 
   return (
     <div className="flex justify-center">
       <div className="p-4">
@@ -73,6 +75,8 @@ export default function MyAssets() {
                 <div className="p-4">
                   <p style={{ height: '64px' }} className="text-2xl font-semibold">{nft.name}</p>
                   <p className="text-gray-400">Product Number: {nft.pno}</p>
+                  <br></br>
+                  <p className='text-gray-400'>Expiry Date: { Intl.DateTimeFormat('en-US',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }).format(nft.period*1000)}</p>
                 </div>
                 
                 <div className="p-4 bg-white" >

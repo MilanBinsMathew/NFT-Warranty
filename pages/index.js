@@ -22,7 +22,8 @@ export default function Home() {
   const router = useRouter()
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
-    const provider = new ethers.providers.JsonRpcProvider()
+    
+    const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/f70bdacfab624d5095c7bfeb3ca64f1c")
     const tokencontract = new ethers.Contract(nftaddress, NFT.abi, provider)
     const marketcontract = new ethers.Contract(nftmarketaddress, NFTMarket.abi, provider)
     const data = await marketcontract.fetchWarranty()
@@ -38,7 +39,7 @@ export default function Home() {
         tokenId: i.tokenId.toNumber(),
         seller: i.seller,
         owner: i.owner,
-        period: i.period.toNumber(),
+        period: Date(i.period.toNumber()),
         pno: i.pno.toNumber(),
         image: meta.data.image,
         name: meta.data.name,
@@ -63,7 +64,7 @@ export default function Home() {
     await transaction.wait()
     
     const tokencontract = new ethers.Contract(nftaddress, NFT.abi, signer)
-    const approve = await tokencontract.giveResaleApproval(nft.tokenId);
+    const approve = await tokencontract.giveResaleApproval();
     await approve.wait();
     loadNFTs()
 
@@ -88,8 +89,7 @@ export default function Home() {
                   <div style={{ height: '70px', overflow: 'hidden' }}>
                     <p className="text-gray-400">{nft.description}</p>
                     <br></br>
-                    <p className="text-gray-400">{nft.period} Months</p>
-                    <br></br>
+                    
                     <p className="text-gray-400">Product Number: {nft.pno}</p>
                   </div>
                 </div>

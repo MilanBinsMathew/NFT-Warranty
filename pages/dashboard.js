@@ -46,6 +46,7 @@ export default function check() {
             pno: i.pno.toNumber(),
             owner: i.owner,
             name: meta.data.name,
+            claim: i.claim.toNumber(),
             image: meta.data.image,
             tokenURI
           }
@@ -85,14 +86,16 @@ export default function check() {
                     <img src={nft.image} />
                     <div className="p-1">
                       <p style={{ height: '34px' }} className="text-2xl font-semibold">{nft.name}</p>
-                      <div style={{ height: '150px', overflow: 'hidden' }}>
+                      <div style={{ overflow: 'hidden' }}>
                         <p className="text-gray-700">{nft.description}</p>
                       <br></br>
-                        <p className="text-gray-700">Owner: {nft.owner}</p>
+                        <p className="text-gray-700">Owner Address: {nft.owner}</p>
                        <br></br>
                         <p className="text-gray-700">Product Number: {nft.pno}</p>
                         <br></br>
-                        <p className="text-gray-700">Seller: {nft.seller}</p>
+                        <p className="text-gray-700">Seller Address: {nft.seller}</p>
+                        <br></br>
+                        <p className="text-gray-700">Warranty Claimed: {nft.claim} times</p>
                       </div>
                     </div>
                   </div>
